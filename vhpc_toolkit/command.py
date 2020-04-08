@@ -11,6 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # coding=utf-8
 import cmd
+import shlex
 
 from vhpc_toolkit import connect
 from vhpc_toolkit import get_args
@@ -235,7 +236,7 @@ class Shell(cmd.Cmd):
             return
 
     def get_ops(self, method, arg):
-        args = getattr(get_args, "get_" + method + "_parser")().parse_args(arg.split())
+        args = getattr(get_args, "get_" + method + "_parser")().parse_args(shlex.split(arg))
         kwargs = vars(args)
         kwargs = {**self.main_kargs, **kwargs}
         ops = Operations(self.content, **kwargs)
